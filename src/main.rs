@@ -21,8 +21,22 @@ enum Command {
 #[derive(Subcommand)]
 enum JsonCommand {
     Format {
+        #[arg(short, long)]
+        string: Option<String>,
 
+        #[arg(short, long)]
+        file: Option<String>,
     }
+}
+
+fn handle_json_command(json_command: &Option<JsonCommand>) {
+    match json_command {
+        Some(JsonCommand::Format { string, file }) => {
+            println!("Running a format command with {:?} and {:?}", string, file)
+        }
+        None => {}
+    }
+
 }
 
 fn main() {
@@ -34,12 +48,7 @@ fn main() {
 
     match &cli.command {
         Some(Command::Json {command}) => {
-            match *command {
-                Some(JsonCommand::Format {}) => {
-                    println!("Running some format command")
-                }
-                None => {}
-            }
+            handle_json_command(command)
         }
         None => {}
     }
